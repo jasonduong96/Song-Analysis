@@ -1,0 +1,18 @@
+SELECT kpopsongs.*, "Kpop artist debut dates"."Gender", "Kpop artist debut dates"."Debut Date", "Kpop comeback dates"."Comeback Date" FROM "Kpop artist debut dates" 
+LEFT JOIN kpopsongs 
+ON 
+CASE
+	when "Kpop artist debut dates"."Artist Name" ILIKE kpopsongs."Artist Name" THEN 1
+	when "Kpop artist debut dates"."Artist short name" ILIKE kpopsongs."Artist Name" THEN 1 
+ELSE 0
+END = 1
+LEFT JOIN "Kpop comeback dates"
+ON
+CASE
+	when "Kpop artist debut dates"."Artist Name" ILIKE "Kpop comeback dates"."Artist Name" 
+	AND "kpopsongs"."Track_Title" ILIKE "Kpop comeback dates"."Song Name" THEN 1
+	when "Kpop artist debut dates"."Artist short name" ILIKE "Kpop comeback dates"."Artist Name"
+	AND "kpopsongs"."Track_Title" ILIKE "Kpop comeback dates"."Song Name" THEN 1
+ELSE 0
+END = 1
+WHERE kpopsongs."Artist Name" IS NOT NULL
